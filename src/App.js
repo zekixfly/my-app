@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.scss";
+import NotificaitonList from "./components/NotificationList";
 
 function App() {
+  const title = "通知清單";
+
+  const [dataSource, setDataSource] = useState([
+    {
+      key: "1",
+      id: "nl1",
+      name: "黃俊翔",
+      email: "d34723@tier.org.tw",
+    },
+    {
+      key: "2",
+      id: "nl2",
+      name: "施威廷",
+      email: "d34333@tier.org.tw",
+    },
+  ]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NotificaitonList
+        title={title}
+        dataSource={dataSource}
+        setDataSource={setDataSource}
+      />
     </div>
   );
 }
