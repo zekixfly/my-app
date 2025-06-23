@@ -14,37 +14,29 @@ function NotificationList(props) {
 
   const [form] = Form.useForm();
 
-  const handleFormOk = () => {
-    form
-      .validateFields()
-      .then(() => {
-        if (currentId) {
-          let findItem = dataSource.find((item) => item.id === currentId);
-          findItem.name = form.getFieldValue("name");
-          findItem.email = form.getFieldValue("email");
-          setDataSource((prev) =>
-            prev.map((item) => (item.id === currentId ? findItem : item))
-          );
-          notification.success({
-            message: "更新成功",
-          });
-        } else {
-          const newData = {
-            key: dataSource.length + 1,
-            ...form.getFieldsValue(),
-          };
-          setDataSource((prev) => [...prev, newData]);
-          notification.success({
-            message: "新增成功",
-          });
-        }
-        setIsFormOpen(false);
-      })
-      .catch((error) => {
-        notification.error({
-          message: "請確實填寫所有欄位",
-        });
+  const handleFormSubmit = (values) => {
+    console.log("onFinish", values);
+    if (currentId) {
+      let findItem = dataSource.find((item) => item.id === currentId);
+      findItem.name = values.name;
+      findItem.email = values.email;
+      setDataSource((prev) =>
+        prev.map((item) => (item.id === currentId ? findItem : item))
+      );
+      notification.success({
+        message: "更新成功",
       });
+    } else {
+      const newData = {
+        key: dataSource.length + 1,
+        ...values,
+      };
+      setDataSource((prev) => [...prev, newData]);
+      notification.success({
+        message: "新增成功",
+      });
+    }
+    setIsFormOpen(false);
   };
 
   const handleFormCancel = () => {
@@ -88,10 +80,6 @@ function NotificationList(props) {
   function handleRemove(id) {
     setCurrentId(id);
     setIsDeleteTipOpen(true);
-  }
-
-  function onFinish(values) {
-    console.log(values);
   }
 
   const columns = [
@@ -148,13 +136,12 @@ function NotificationList(props) {
         title={modalTitle}
         closable={false}
         open={isFormOpen}
-        onOk={handleFormOk}
-        onCancel={handleFormCancel}
+        footer={null}
       >
         <Form
           form={form}
           name="control-hooks"
-          onFinish={onFinish}
+          onFinish={handleFormSubmit}
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 18 }}
           style={{ maxWidth: 600 }}
@@ -175,6 +162,22 @@ function NotificationList(props) {
             rules={[{ required: true, message: "請輸入Email地址" }]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 5, span: 18 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+              }}
+            >
+              <Button type="default" onClick={handleFormCancel}>
+                Cancel
+              </Button>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </div>
           </Form.Item>
         </Form>
       </Modal>
