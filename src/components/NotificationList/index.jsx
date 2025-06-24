@@ -15,7 +15,6 @@ function NotificationList(props) {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values) => {
-    console.log("onFinish", values);
     if (currentId) {
       let findItem = dataSource.find((item) => item.id === currentId);
       findItem.name = values.name;
@@ -70,17 +69,17 @@ function NotificationList(props) {
     setIsFormOpen(true);
   };
 
-  function handleEdit(id) {
+  const handleEdit = (id) => {
     setCurrentId(id);
     const record = dataSource.find((item) => item.id === id);
     form.setFieldsValue(record);
     setIsFormOpen(true);
-  }
+  };
 
-  function handleRemove(id) {
+  const handleRemove = (id) => {
     setCurrentId(id);
     setIsDeleteTipOpen(true);
-  }
+  };
 
   const columns = [
     {
