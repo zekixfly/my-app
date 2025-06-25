@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Table, Button, Modal, Form, Input, notification } from "antd";
+import { v4 as uuidv4 } from "uuid";
 import "./index.scss";
 
 function NotificationList(props) {
@@ -27,7 +28,7 @@ function NotificationList(props) {
       });
     } else {
       const newData = {
-        key: dataSource.length + 1,
+        key: String(dataSource.length ? Number(dataSource.at(-1).key) + 1 : 1),
         ...values,
       };
       setDataSource((prev) => [...prev, newData]);
@@ -64,7 +65,7 @@ function NotificationList(props) {
     setCurrentId(null);
     form.resetFields();
     form.setFieldsValue({
-      id: `nl${Number(dataSource.at(-1).id.split("nl").pop()) + 1}`,
+      id: uuidv4(),
     });
     setIsFormOpen(true);
   };
